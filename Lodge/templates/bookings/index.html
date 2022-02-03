@@ -1,0 +1,24 @@
+{% extends "bookings/layout.html" %}
+
+{% block body %}
+    <h1>Availability</h1>
+    <ul>
+        {% for room in rooms %}
+        
+        <li>Room: {{room.room_number }} {{ room.room_type}}</li>
+        {% endfor %}
+    </ul>
+    <form>
+        <input autocomplete="off" autofocus id="name" placeholder="Name" type="text">
+        <input type="submit">
+    </form>
+    <script>
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            alert('Room booked, ' + document.querySelector('#name').value);
+            event.preventDefault();
+        });
+
+    </script>
+{% endblock %}
+

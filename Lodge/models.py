@@ -2,7 +2,7 @@ from datetime import timezone
 from django.db import models
 
 # Create your models here.
-class Actions(models.Model): 
+class Action(models.Model): 
     BOOKING = 1
     CHECK = 2
     CANCEL = 3
@@ -18,7 +18,7 @@ class Actions(models.Model):
     allowed_actions = models.PositiveSmallIntegerField(
        choices=ROLE)
 
-class Roles(models.Model): 
+class Role(models.Model): 
     MANAGER = 1
     ASSMANAGER = 2
     CSA = 3
@@ -28,16 +28,16 @@ class Roles(models.Model):
         (CSA, ('Customer Service Assistant'))
     )
     role_type = models.PositiveSmallIntegerField(choices=ROLE_TYPE)
-    allowed_actions = models.ManyToManyField(Actions)
+    allowed_actions = models.ManyToManyField(Action)
 
-class Users(models.Model):
+class User(models.Model):
     full_name = models.CharField(max_length=240, null=False, blank=False)
     username = models.CharField(max_length=240)
     password = models.CharField(max_length=240)
-    role_id = models.ForeignKey(Roles, on_delete=models.PROTECT)
+    role_id = models.ForeignKey(Role, on_delete=models.PROTECT)
     created_at = models.DateTimeField (auto_now_add=True)
 
-class Customers(models.Model):
+class Customer(models.Model):
     first_name = models.CharField(max_length=240)
     last_name = models.CharField(max_length=240)
     email = models.CharField(max_length=240, blank = True, null = True)
@@ -56,7 +56,10 @@ class Room_type(models.Model):
     room_type_desc = models.PositiveSmallIntegerField(choices = ROOM_TYPE_DESC)
     max_occupancy = models.IntegerField
 
-class Rooms(models.Model):
+    def __str__(self):
+        return f"{self.ROOM_TYPE_DESC}"
+
+class Room(models.Model):
     room_number = models.IntegerField()
     room_type = models.ForeignKey(Room_type, on_delete=models.PROTECT)
     sleeps = models.IntegerField()
@@ -65,8 +68,8 @@ class Rooms(models.Model):
     disabled_access = models.IntegerField()
     room_price = models.DecimalField(decimal_places=2, max_digits=6)
 
-class Bookings(models.Model):
-    customer_id = models.ForeignKey(Customers, on_delete=models.PROTECT)
+class Booking(models.Model):
+    customer_id = models.ForeignKey(Customer, on_delete=models.PROTECT)
     first_date = models.DateTimeField()
     last_date = models.DateTimeField()
     booked_date = models.DateTimeField()
@@ -78,16 +81,19 @@ class Bookings(models.Model):
         self.booked_date = timezone.now()
         self.save()
 
-class Booking_rooms(models.Model): 
-    booking_id = models.ForeignKey(Bookings, on_delete=models.PROTECT)
-    room_id = models.ForeignKey(Rooms, on_delete=models.PROTECT, default=0)
+    def __str__(self):
+        return f"{self.id}: {self.customer_id} {self.first_date} to {self.last_date}"
+
+class Booking_room(models.Model): 
+    booking_id = models.ForeignKey(Booking, on_delete=models.PROTECT)
+    room_id = models.ForeignKey(Room, on_delete=models.PROTECT, default=0)
 
 class Checkin(models.Model):
-    booking_id = models.ForeignKey(Bookings, on_delete=models.PROTECT)
+    booking_id = models.ForeignKey(Booking, on_delete=models.PROTECT)
     checkin_date = models.DateTimeField(auto_now_add=True)
  
 class Checkout(models.Model):
-    booking_id = models.ForeignKey(Bookings, on_delete=models.PROTECT)
+    booking_id = models.ForeignKey(Booking, on_delete=models.PROTECT)
     checkout_date = models.DateTimeField(auto_now_add=True)
 
 class Discount_type(models.Model):
@@ -100,13 +106,13 @@ class Discount_type(models.Model):
     )
     type = models.PositiveSmallIntegerField(choices = TYPE)
 
-class Seasonal_discounts(models.Model):
+class Seasonal_discount(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     seasonal_amount = models.DecimalField(decimal_places=2, max_digits=6)
     type_id = models.IntegerField(default = 0)
 
-class Bulk_discounts(models.Model):
+class Bulk_discount(models.Model):
     min_rooms = models.IntegerField()
     bulk_amount = models.DecimalField(decimal_places=2, max_digits=6)
     type_id = models.IntegerField(default = 0)
