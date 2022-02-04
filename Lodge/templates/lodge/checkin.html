@@ -1,0 +1,34 @@
+{% extends "lodge/layout.html" %}
+
+{% block body %}
+    <h1>Check in - {% now "l jS F Y" %}  </h1>
+    
+    <ul>
+
+        {% for booking in bookings %}
+            {% if booking.first_date == 'Mon' %}
+                <li>{{ booking.customer_id}} </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+    <button name="check_in" type="submit"> Check in
+    </button>
+
+    <h1> </h1>
+
+    
+    <form>
+        <input autocomplete="off" autofocus id="name" placeholder="Name" type="text">
+        <input type="submit">
+    </form>
+    <script>
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            alert('Checked in, ' + document.querySelector('#name').value);
+            event.preventDefault();
+        });
+
+    </script>
+{% endblock %}
+

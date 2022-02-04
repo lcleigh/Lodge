@@ -3,12 +3,21 @@ from django.http import HttpResponseBadRequest, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import Booking, Room
+from .models import Booking, Checkin, Room
+import datetime
 
 # Create your views here.
 def index(request):
-    return render(request, "bookings/index.html", {
+    return render(request, "lodge/index.html", {
         "rooms": Room.objects.all()
+    })
+
+
+def checkin(request):
+    now = datetime.datetime.now()
+    return render(request, "lodge/checkin.html", {
+        "bookings": Booking.objects.all()
+        #"checkins": Checkin.objects.all()
     })
 
 
