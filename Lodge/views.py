@@ -9,14 +9,15 @@ import datetime
 # Create your views here.
 def index(request):
     return render(request, "lodge/index.html", {
-        "rooms": Room.objects.all()
+        "rooms": Room.objects.all(),
+        "bookings": Booking.objects.all()
     })
 
 
 def checkin(request):
     now = datetime.datetime.now()
     return render(request, "lodge/checkin.html", {
-        "bookings": Booking.objects.all()
+        "bookings": Booking.objects.filter(first_date=now)
         #"checkins": Checkin.objects.all()
     })
 
