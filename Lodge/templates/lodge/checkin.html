@@ -1,23 +1,41 @@
 {% extends "lodge/layout.html" %}
 
 {% block body %}
-    <h1>Check in - {% now "l jS F Y" %}  </h1>
+
+
+
+  
+    <h1>Check in list - {% now "l jS F Y" %}  </h1>
+   
     
     <ul>
-
-        {% for booking in bookings %}
-            {% if booking.first_date == 'Mon' %}
-                <li>{{ booking.customer_id}} </li>
-            {% endif %}
+        {% for checkin in checkins %}  
+            <li>{{ checkin.customer_id}} </li>           
+        {% empty %}
+            <li>No guests to check in</li>
         {% endfor %}
     </ul>
 
-    <button name="check_in" type="submit"> Check in
-    </button>
+
+    
+    <h2> Checked in</h2>
+
+    <ul>
+        {% for checked_in_guest in checked_in_guests %}  
+            <li>{{ checked_in_guest.customer_id}} </li>           
+        {% empty %}
+            <li>No guests checked in. Where are they??</li>
+        {% endfor %}
+    </ul>   
+    
+   
 
     <h1> </h1>
 
-    
+    <h2>Check in guest</h2>  
+   
+    <h1> </h1>
+
     <form>
         <input autocomplete="off" autofocus id="name" placeholder="Name" type="text">
         <input type="submit">
@@ -25,10 +43,14 @@
     <script>
 
         document.querySelector('form').addEventListener('submit', function(event) {
-            alert('Checked in, ' + document.querySelector('#name').value);
+            alert('All checked in, ' + document.querySelector('#name').value + '. Enjoy your stay!');
             event.preventDefault();
         });
 
     </script>
+
+    <h1> </h1>
+
+    <a href="{% url 'index' %}">Back to Home Page</a>
 {% endblock %}
 

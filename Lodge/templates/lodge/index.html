@@ -1,13 +1,38 @@
 {% extends "lodge/layout.html" %}
 
 {% block body %}
-    <h1>Avail</h1>
+    <h1>{% now "l jS F Y" %}</h1>
+    <h1>Room List</h1>
     <ul>
-        {% for room in rooms %}
-        
-        <li>Room: {{room.room_number }} {{ room.room_type}}</li>
+        {% for room in rooms %}      
+            <li>Room: {{room.room_number }} {{ room.room_type}}</li>
         {% endfor %}
     </ul>
+    
+    <ul>
+        {% for booking in bookings %}
+            <li>Booking: {{ booking.customer_id}} {{booking.first_date }} to {{ booking.last_date}} booked on {{ booking.booked_date}}</li>
+        {% endfor %}
+    </ul>   
+    
+    <ul>
+        {% for checked_in_guest in checked_in_guests %}  
+            <li>{{ checked_in_guest.customer_id}}</li>           
+        {% empty %}
+            <li>No guests checked in. Where are they??</li>
+        {% endfor %}
+    </ul>   
+    
+    
+    <h1>Tasks</h1>
+    <ul>
+        {% for task in tasks %}
+            <li>{{ task }}</li>
+        {% empty %}
+            <li>No tasks.</li>
+        {% endfor %}
+    </ul>
+    
     <form>
         <input autocomplete="off" autofocus id="name" placeholder="Name" type="text">
         <input type="submit">
