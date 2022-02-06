@@ -1,6 +1,7 @@
 {% extends "lodge/layout.html" %}
 
 {% block body %}
+    
     <h1>{% now "l jS F Y" %}</h1>
     <h1>Room List</h1>
     <ul>
@@ -9,21 +10,32 @@
         {% endfor %}
     </ul>
     
+    <h1>Bookings List</h1>
     <ul>
+        <span class="message">
         {% for booking in bookings %}
             <li>Booking: {{ booking.customer_id}} {{booking.first_date }} to {{ booking.last_date}} booked on {{ booking.booked_date}}</li>
         {% endfor %}
+        </span>
     </ul>   
     
+    <h1>Checked in Guest List</h1>
     <ul>
+        <span class="message">
         {% for checked_in_guest in checked_in_guests %}  
             <li>{{ checked_in_guest.customer_id}}</li>           
         {% empty %}
             <li>No guests checked in. Where are they??</li>
         {% endfor %}
+        </span>
     </ul>   
-    
-    
+    <ul>
+        <li><a href="default.asp">Home</a></li>
+        <li><a href="news.asp">News</a></li>
+        <li><a href="contact.asp">Contact</a></li>
+        <li><a href="about.asp">About</a></li>
+      </ul>
+  
     <h1>Tasks</h1>
     <ul>
         {% for task in tasks %}
@@ -34,7 +46,7 @@
     </ul>
     
     <form>
-        <input autocomplete="off" autofocus id="name" placeholder="Name" type="text">
+        <input autocomplete="off" autofocus id="name" placeholder="Guest Name" type="text">
         <input type="submit">
     </form>
     <script>
@@ -45,5 +57,8 @@
         });
 
     </script>
+
+    
+     <a href="{% url 'checkin' %}">To Check in Page</a>
 {% endblock %}
 

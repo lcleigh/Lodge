@@ -1,0 +1,39 @@
+{% extends "lodge/layout.html" %}
+{% block title %}
+Contact
+{% endblock %}
+{% block body %}
+<p>Contact page for the Visual Studio Code Django tutorial.</p>
+
+<div>
+  
+<ul>
+    <li class ="nav-item">  <a class="nav-link text-dark" href="default.asp">Home</a></li>
+    <li class ="nav-item"> <a class="nav-link text-dark" href="news.asp">News</a></li>
+    <li class ="nav-item"> <a class="nav-link text-dark" href="contact.asp">Contact</a></li>
+    <li class ="nav-item"> <a class="nav-link text-dark" href="about.asp">About</a></li>
+    <li class ="ms-auto  btn btn-secondary"> <a class="nav-link text-dark" href="signin.asp" role="button">Sign in</a></li>
+  </ul>
+ 
+</div> 
+<div class="text-center">
+  
+       <form action="https://www.google.com/search" class="mt-4" method="get">
+        <input autocomplete="off" autofocus class="form-control form-control-lg mb-4 mx-auto w-50" name="q" placeholder="Query" type="search">
+        <button class="btn btn-light" type="submit">Google Search</button>
+        <button class="btn btn-light" name="btnI" type="submit">I'm Feeling Lucky</button>
+    </form>
+
+</div>
+  <header>
+    <span id="first" class="centered large">
+    Lisa Smith
+    </span>
+  </header>
+  <main>
+      Welcome to the contacts page!
+</main>
+  <footer>
+      Copyright &#169; again
+  </footer>
+{% endblock %}

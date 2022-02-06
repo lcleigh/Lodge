@@ -1,16 +1,13 @@
 {% extends "lodge/layout.html" %}
 
 {% block body %}
-
-
-
-  
-    <h1>Check in list - {% now "l jS F Y" %}  </h1>
+ 
+    <h1>{% now "l jS F Y" %}  </h1>
    
-    
+    <h2>Guest list</h2>
     <ul>
-        {% for checkin in checkins %}  
-            <li>{{ checkin.customer_id}} </li>           
+        {% for booking in bookings %}  
+            <li>{{ booking.customer_id}} </li>           
         {% empty %}
             <li>No guests to check in</li>
         {% endfor %}
@@ -21,8 +18,8 @@
     <h2> Checked in</h2>
 
     <ul>
-        {% for checked_in_guest in checked_in_guests %}  
-            <li>{{ checked_in_guest.customer_id}} </li>           
+        {% for checkin in checkins %}  
+            <li>{{ checkin.customer_id}} </li>           
         {% empty %}
             <li>No guests checked in. Where are they??</li>
         {% endfor %}
