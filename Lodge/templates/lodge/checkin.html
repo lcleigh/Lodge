@@ -1,56 +1,42 @@
 {% extends "lodge/layout.html" %}
 
 {% block body %}
+ 
+    <h1>{{ checkin.checkin_date }}</h1>
 
-
-
-  
-    <h1>Check in list - {% now "l jS F Y" %}  </h1>
-   
-    
+    <h2> Checked in Guests</h2>
     <ul>
-        {% for checkin in checkins %}  
-            <li>{{ checkin.customer_id}} </li>           
+        {% for customer in customers %}  
+            <li>{{ customer}} </li>           
         {% empty %}
-            <li>No guests to check in</li>
-        {% endfor %}
-    </ul>
-
-
-    
-    <h2> Checked in</h2>
-
-    <ul>
-        {% for checked_in_guest in checked_in_guests %}  
-            <li>{{ checked_in_guest.customer_id}} </li>           
-        {% empty %}
-            <li>No guests checked in. Where are they??</li>
+            <li>No customers</li>
         {% endfor %}
     </ul>   
-    
    
 
     <h1> </h1>
 
-    <h2>Check in guest</h2>  
+    <h2>Check in a Guest</h2>  
    
     <h1> </h1>
 
-    <form>
-        <input autocomplete="off" autofocus id="name" placeholder="Name" type="text">
+    <form action="{% url 'book' checkin.id %}" method="post">
+        {% csrf_token %}
+        <select name="customer">
+            {% for customer in non_customers %}
+                <option value="{{ customer.id }}">{{ customer }}</option>
+            {% endfor %}
+        </select>
         <input type="submit">
+    
     </form>
-    <script>
+    
 
-        document.querySelector('form').addEventListener('submit', function(event) {
-            alert('All checked in, ' + document.querySelector('#name').value + '. Enjoy your stay!');
-            event.preventDefault();
-        });
-
-    </script>
 
     <h1> </h1>
 
-    <a href="{% url 'index' %}">Back to Home Page</a>
+    
+
+    
 {% endblock %}
 

@@ -4,78 +4,50 @@ from django.http import HttpResponseBadRequest, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import Booking, Checked_in_guest, Checkin, Room
+
+from .models import Checkin, Customer
 import datetime
 
 
-#tasks = ["foo", "bar","baz"]
-
-class NewTaskForm(forms.Form):
-    task = forms.CharField(label="New Task")
-    priority = forms.IntegerField(label="Priority", min_value=1, max_value=5)
-
 # Create your views here.
-def index(request):
-    if "lodge" not in request.session:
-        request.session["lodge"] = []
+def index(request): 
     return render(request, "lodge/index.html", {
-        "rooms": Room.objects.all(),
-        "bookings": Booking.objects.all(),
-        "checked_in_guests": Checked_in_guest.objects.all(),
-        "lodge": request.session["lodge"]   
+        "checkins": Checkin.objects.all()
     })
 
-def checkin(request):
-    now = datetime.datetime.now()
-    return render(request, "lodge/checkin.html", {
-        "checkins": Checkin.objects.filter(checkin_date__isnull=True),
-        "bookings": Booking.objects.filter(first_date=now),   
-        "checked_in_guests": Checked_in_guest.objects.all()      
-    })
-    
-def checked_in_guests(request):   
-    return render(request, "lodge/checkin.html", {
-        "checked_in_guests": Checked_in_guest.objects.all()     
-    })
-
-
-def flight(request, flight_id):
+def checkin(request, checkin_id):
     try:
-        flight = Flight.objects.get(id=flight_id)
-    except Flight.DoesNotExist:
-        raise Http404("Flight not found.")
-    return render(request, "flights/flight.html", {
-        "flight": flight,
-        "passengers": flight.passengers.all(),
-        "non_passengers": Passenger.objects.exclude(flights=flight).all()
+        checkin = Checkin.objects.get(id=checkin_id)
+    except Checkin.DoesNotExist:
+        raise Http404("checkin not found.")
+    return render(request, "lodge/checkin.html", {
+        "checkin": checkin,
+        "customers": checkin.customers.all(),
+        "non_customers": Customer.objects.exclude(checkins=checkin).all()
     })
 
-def book(request, flight_id):
+
+#this is from CS50 airline example
+def book(request, checkin_id):
     if request.method == "POST":
         try:
-            passenger = Passenger.objects.get(pk=int(request.POST["passenger"]))
-            flight = Flight.objects.get(pk=flight_id)
+            customer = Customer.objects.get(pk=int(request.POST["customer"]))
+            checkin = Checkin.objects.get(pk=checkin_id)
         except KeyError:
-            return HttpResponseBadRequest("Bad Request: no flight chosen")
-        except Flight.DoesNotExist:
-            return HttpResponseBadRequest("Bad Request: flight does not exist")
-        except Passenger.DoesNotExist:
-            return HttpResponseBadRequest("Bad Request: passenger does not exist")
-        passenger.flights.add(flight)
-        return HttpResponseRedirect(reverse("flight", args=(flight_id,)))
+            return HttpResponseBadRequest("Bad Request: no customer chosen")
+        except Checkin.DoesNotExist:
+            return HttpResponseBadRequest("Bad Request: customer does not exist")
+        except Customer.DoesNotExist:
+            return HttpResponseBadRequest("Bad Request: booking does not exist")
+        customer.checkins.add(checkin)
+        return HttpResponseRedirect(reverse("checkin", args=(checkin_id,)))
+ 
 
-def add(request):
-    if request.method == "POST":
-        form = NewTaskForm(request.POST)
-        if form.is_valid():
-            task = form.cleaned_data["task"]
-            request.session["lodge"] += [task]
-            return HttpResponseRedirect(reverse("lodge:index"))
-        else:
-            return render(request, "lodge/checkin.html", {
-                "form": form
-            })
-    else:
-        return render(request, "lodge/checkin.html", {
-            "form": NewTaskForm()
-        })
+def home(request):
+    return render(request, "lodge/home.html")
+
+def about(request):
+    return render(request, "lodge/about.html")
+
+def contact(request):
+    return render(request, "lodge/contact.html")
