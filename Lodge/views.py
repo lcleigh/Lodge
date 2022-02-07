@@ -2,23 +2,39 @@ from django import forms
 from django.http import HttpResponseBadRequest, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
+from django.db import connection
 
-from .models import Booking, Checkin, Room
+
+from .models import Booking_rooms, Bookings, Checkin, Rooms
 import datetime
 
 # Create your views here.
 def index(request):
     return render(request, "lodge/index.html", {
-        "rooms": Room.objects.all(),
-        "bookings": Booking.objects.all()
+        "rooms": Rooms.objects.all(),
+        "bookings": Bookings.objects.all()
     })
 
 
 def checkin(request):
     now = datetime.datetime.now()
+
+    with connection.cursor() as cursor:
+        cursor.execute("'SELECT br.id, c.first_name, c.last_name, r.room_number FROM lodge_customers c JOIN lodge_bookings b ON c.id = b.customer_id_id JOIN lodge_booking_rooms br ON b.id = br.booking_id_id JOIN lodge_rooms r ON r.id = br.room_id_id LEFT JOIN lodge_checkin ch ON ch.booking_room_id_id = b.id WHERE ch.checkin_date IS NULL AND b.first_date <= "+ now +" AND b.last_date > "+now)
+        customers_to_checkin = cursor.fetchall()
+    #    customers_to_checkin = cursor.dictfetchall()
+        #customers_to_checkin = cursor.getdescription()
+
+        Bookings.objects
+
+    #cust_list ={}
+    #for row in customers_to_checkin:
+    #    cust_list = {"id":row[0]}
+    #    cust_list = {"first_name":row[1]}
+    #    cust_list = {"last_name":row[2]}
+    #    cust_list = {"room_number":row[3]}
     return render(request, "lodge/checkin.html", {
-        "bookings": Booking.objects.filter(first_date=now)
-        #"checkins": Checkin.objects.all()
+        "bookings": customers_to_checkin
     })
 
 
