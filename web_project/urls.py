@@ -23,9 +23,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('lodge/', include("Lodge.urls")),
-    path('checkin/', include("Lodge.urls")),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('lodge/', TemplateView.as_view(template_name='home.html'), name='home'), # new
+    path('accounts/', include('django.contrib.auth.urls'))
+    #path('lodge/', TemplateView.as_view(template_name='home.html'), name='home'), # new
 ]
 
 urlpatterns += staticfiles_urlpatterns()

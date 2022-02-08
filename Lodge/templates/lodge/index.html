@@ -2,12 +2,23 @@
 
 {% block body %}
     
-<h1>Checkins</h1>
+<h1>Checkin Dates</h1>
 <ul>
     {% for checkin in checkins %}
         <li>
             <a href="{% url 'checkin' checkin.id %}">
                 Checkin {{ checkin.id }}: {{ checkin.checkin_date}}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+<h1>Checkout Dates</h1>
+<ul>
+    {% for checkout in checkouts %}
+        <li>
+            <a href="{% url 'checkout' checkout.id %}">
+                Checkout {{ checkout.id }}: {{ checkout.checkout_date}}
             </a>
         </li>
     {% endfor %}

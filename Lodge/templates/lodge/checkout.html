@@ -1,0 +1,42 @@
+{% extends "lodge/layout.html" %}
+
+{% block body %}
+ 
+    <h1>{{ checkout.checkout_date }}</h1>
+
+    <h2> Guests to Check out</h2>
+    <ul>
+        {% for guest in guests %}  
+            <li>{{ guest}} </li>           
+        {% empty %}
+            <li>No guests to check out</li>
+        {% endfor %}
+    </ul>   
+   
+
+    <h1> </h1>
+
+    <h2>Check out a Guest</h2>  
+   
+    <h1> </h1>
+
+    <form action="{% url 'unbook' checkout.id %}" method="post">
+        {% csrf_token %}
+        <select name="guest">
+            {% for guest in guests %}
+                <option value="{{ guest.id }}">{{ guest }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit">
+    
+    </form>
+    
+
+
+    <h1> </h1>
+
+    
+
+    
+{% endblock %}
+

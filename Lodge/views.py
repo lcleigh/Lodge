@@ -5,14 +5,15 @@ from django.shortcuts import render
 from django.urls import reverse
 
 
-from .models import Checkin, Customer
+from .models import Checkin, Customer, Checkout, Guest
 import datetime
 
 
 # Create your views here.
 def index(request): 
     return render(request, "lodge/index.html", {
-        "checkins": Checkin.objects.all()
+        "checkins": Checkin.objects.all(),
+        "checkouts": Checkout.objects.all()
     })
 
 def checkin(request, checkin_id):
@@ -24,6 +25,17 @@ def checkin(request, checkin_id):
         "checkin": checkin,
         "customers": checkin.customers.all(),
         "non_customers": Customer.objects.exclude(checkins=checkin).all()
+    })
+
+def checkout(request, checkout_id):
+    try:
+        checkout = Checkout.objects.get(id=checkout_id)
+    except Checkout.DoesNotExist:
+        raise Http404("checkout not found.")
+    return render(request, "lodge/checkout.html", {
+        "checkout": checkout,
+        "guests": checkout.guests.all(),
+        "non_guests": Guest.objects.exclude(checkouts=checkout).all()
     })
 
 
@@ -41,6 +53,20 @@ def book(request, checkin_id):
             return HttpResponseBadRequest("Bad Request: booking does not exist")
         customer.checkins.add(checkin)
         return HttpResponseRedirect(reverse("checkin", args=(checkin_id,)))
+
+def unbook(request, checkout_id):
+    if request.method == "POST":
+        try:
+            guest = Guest.objects.get(pk=int(request.POST["guest"]))
+            checkout = Checkout.objects.get(pk=checkout_id)
+        except KeyError:
+            return HttpResponseBadRequest("Bad Request: no customer chosen")
+        except Checkout.DoesNotExist:
+            return HttpResponseBadRequest("Bad Request: customer does not exist")
+        except CustomerGuest.DoesNotExist:
+            return HttpResponseBadRequest("Bad Request: booking does not exist")
+        guest.checkouts.remove(checkout)
+        return HttpResponseRedirect(reverse("checkout", args=(checkout_id,)))
  
 
 def home(request):
