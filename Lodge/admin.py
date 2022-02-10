@@ -11,8 +11,8 @@ class CustomerAdmin(admin.ModelAdmin):
 class GuestAdmin(admin.ModelAdmin):
     filter_horizontal = ("checkouts",)  
    
-
-
+#TODO copy this structure
+#[admin.site.register(X) for X in [RecipeRequirement, MenuItem, Ingredient, Purchase]]
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Checkin)
 admin.site.register(Checkout)

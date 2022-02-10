@@ -24,8 +24,7 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=240)
     email = models.CharField(max_length=240, blank = True, null = True)
     checkins = models.ManyToManyField(Checkin, blank=True, related_name="customers")
-    #checkouts = models.ManyToManyField(Checkout, blank=True, related_name="guests")
-
+    
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 

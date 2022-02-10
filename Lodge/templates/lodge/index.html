@@ -1,32 +1,14 @@
 {% extends "lodge/layout.html" %}
 
 {% block body %}
-    
-<h1>Checkin Dates</h1>
-<ul>
-    {% for checkin in checkins %}
-        <li>
-            <a href="{% url 'checkin' checkin.id %}">
-                Checkin {{ checkin.id }}: {{ checkin.checkin_date}}
-            </a>
-        </li>
-    {% endfor %}
-</ul>
 
-<h1>Checkout Dates</h1>
-<ul>
-    {% for checkout in checkouts %}
-        <li>
-            <a href="{% url 'checkout' checkout.id %}">
-                Checkout {{ checkout.id }}: {{ checkout.checkout_date}}
-            </a>
-        </li>
-    {% endfor %}
-</ul>
 
-   
+{% load static %}
+<div style="border: 1px solid black;">
     
-   
+<img src="{% static "lodge/media/cat.jpg" %}" alt="jpg"  width="300"  class="center"/>
+</div>
+
 
     
      

@@ -1,0 +1,34 @@
+{% extends "lodge/layout.html" %}
+
+{% block body %}
+    
+<h1>Check-in Dates</h1>
+<ul>
+    {% for checkin in checkins %}
+        <li>
+            <a href="{% url 'checkin' checkin.id %}">
+               {{ checkin.checkin_date}}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+<h1>Check-out Dates</h1>
+<ul>
+    {% for checkout in checkouts %}
+        <li>
+            <a href="{% url 'checkout' checkout.id %}">
+               {{ checkout.checkout_date}}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+   
+    
+   
+
+    
+     
+{% endblock %}
+

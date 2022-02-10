@@ -1,8 +1,3 @@
-.message {
-    font-weight: 600;
-    color: blue;
-}
-
 .navbar {
     background-color: lightslategray;
     font-size: 1em;
@@ -31,21 +26,6 @@
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.centered
-{
-       text-align: center;
-}
-
-.left
-{
-       text-align: left;
-}
-
-.large
-{
-    font-size: large; 
-}
-
 ul {
     list-style-type: none;
     margin: 0;
@@ -61,3 +41,9 @@ ul {
       text-decoration: underline;
   }
 
+
+
+  img.center {
+    display: block;
+    margin: 0 auto;
+}

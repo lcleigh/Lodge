@@ -16,6 +16,13 @@ def index(request):
         "checkouts": Checkout.objects.all()
     })
 
+def check(request): 
+    return render(request, "lodge/check.html", {
+        "checkins": Checkin.objects.all(),
+        "checkouts": Checkout.objects.all()
+    })
+
+
 def checkin(request, checkin_id):
     try:
         checkin = Checkin.objects.get(id=checkin_id)
@@ -63,7 +70,7 @@ def unbook(request, checkout_id):
             return HttpResponseBadRequest("Bad Request: no customer chosen")
         except Checkout.DoesNotExist:
             return HttpResponseBadRequest("Bad Request: customer does not exist")
-        except CustomerGuest.DoesNotExist:
+        except Guest.DoesNotExist:
             return HttpResponseBadRequest("Bad Request: booking does not exist")
         guest.checkouts.remove(checkout)
         return HttpResponseRedirect(reverse("checkout", args=(checkout_id,)))
@@ -72,8 +79,8 @@ def unbook(request, checkout_id):
 def home(request):
     return render(request, "lodge/home.html")
 
-def about(request):
-    return render(request, "lodge/about.html")
+def booking(request):
+    return render(request, "lodge/booking.html")
 
-def contact(request):
-    return render(request, "lodge/contact.html")
+def room(request):
+    return render(request, "lodge/room.html")
