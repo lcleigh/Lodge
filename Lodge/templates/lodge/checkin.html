@@ -3,38 +3,43 @@
 {% block body %}
   
     <!--<h1>Check in list - {% now "l jS F Y" %}  </h1>-->
-   
-    
-    <ul>
-        {% for checkin in bookings %}  
-            <label for="checkin">Customer to check in:</label>
-            <li> {{ cust_list }} </li>           
-        {% empty %}
-            <li>No guests to check in</li>
+        <br />
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <h1>{{ message|escape|safe }}</h1>
+            {% endif %}
         {% endfor %}
-    </ul>
+    {% endif %}
 
-    <h1> </h1>
-
-    <h2>Check in guest(s)</h2>  
-   
-    <h1> </h1>
-
-    <form>
-        <input autocomplete="off" autofocus id="name" placeholder="Name" type="text">
-        <input type="submit">
+    <form action="{% url 'checked_in' %}" method="post">
+        {% csrf_token %}
+        <label for="checkin">Customer(s) to check in:</label>
+        <select name="cust">
+        {% for checkin in tocheckin %} 
+            <option value={{checkin.0}}>{{checkin.1}} {{checkin.2}} - Room Number: {{checkin.3}}</option>          
+        {% empty %}
+            <option value={{checkin.0}}>No guests to check in</option>     
+        {% endfor %}
+        </select>
+        <input type="submit" value="Check In">  
     </form>
-    <script>
 
-        document.querySelector('form').addEventListener('submit', function(event) {
-            alert('All checked in, ' + document.querySelector('#name').value + '. Enjoy your stay!');
-            event.preventDefault();
-        });
+    <br />
 
-    </script>
+    <form action="{% url 'checked_out' %}" method="post">
+        {% csrf_token %}
+        <label for="checkout">Customer(s) to check out:</label>
+        <select name="cust">
+        {% for checkout in tocheckout %} 
+            <option value={{checkout.0}}>{{checkout.1}} {{checkout.2}} - Room Number: {{checkout.3}}</option>          
+        {% empty %}
+            <option value={{checkout.0}}>No guests to check out</option>     
+        {% endfor %}
+        </select>
+        <input type="submit" value="Check Out">  
+    </form>
 
-    <h1> </h1>
-
-    <a href="{% url 'index' %}">Back to Home Page</a>
 {% endblock %}
 
