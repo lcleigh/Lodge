@@ -1,0 +1,28 @@
+<!-- templates/home.html-->
+{% extends 'layout.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+
+{% block title %}Home{% endblock %}
+
+
+
+{% block content %}
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+  <p id="login"><a href="{% url 'logout' %}">Log Out</a></p>
+
+  
+
+  {% else %}
+  <p id="login">You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a>
+{% endif %}
+<br>
+<br>
+
+{% endblock %}
+
+
+
+

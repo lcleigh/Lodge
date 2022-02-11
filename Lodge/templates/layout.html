@@ -1,0 +1,28 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Fawada's Lodge{% endblock %}</title>
+  
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+
+</head>
+
+<body>
+  <main>
+    <h1 class="fawadas">Fawada's Lodge</h1>
+    <div class="navbar">
+      <a href="" class="navbar-brand">Home</a>
+      <a href="" class="navbar-item">Check in/Check out</a>
+      <a href="" class="navbar-item">Bookings</a>
+      <a href="" class="navbar-item">Room Management</a>
+  </div>
+    {% block content %}
+    
+    {% endblock %}
+  </main>
+</body>
+</html>

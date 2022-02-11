@@ -1,4 +1,10 @@
-{% extends "lodge/layout.html" %}
+{% extends "layout.html" %}
+{% load static %}
+
+
+<link rel="stylesheet"  href="{%  static  'css/style.css'  %}">
+{% block title %}Index{% endblock %}
+
 
 {% block body %}
     <h1>{% now "l jS F Y" %}</h1>
