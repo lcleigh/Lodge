@@ -1,7 +1,30 @@
 <!-- templates/registration/login.html -->
-<h2>Log In</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
-</form>
+{% extends 'layout.html' %}
+{% load static %}
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+  {% block title %}Login{% endblock %}
+</head>
+
+
+{% block content %}
+<body>
+<div class="loginwhole">
+  <form method="post">
+    <p class="loginheader">Staff Log In</p>
+    
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    <button type="submit">
+      <i class="spinner"></i>
+      <span class="state">Log in</span>
+    </button>
+  </form>
+  <a href="#">Forgot your password?</a>
+</div>
+
+</body>
+{% endblock %}
+
+
